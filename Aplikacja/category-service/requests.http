@@ -1,0 +1,58 @@
+### Create Genre
+POST http://localhost:8081/api/genres
+Content-Type: application/json
+
+{
+  "name": "Action",
+  "popularityIndex": 9.0
+}
+
+### List genres
+GET http://localhost:8081/api/genres
+
+### Get a single genre
+GET http://localhost:8080/api/genres/c99e5041-cee9-4c5e-9435-0e8b0cc71de2
+
+### Update genre
+PUT http://localhost:8080/api/genres/{id}
+Content-Type: application/json
+
+{
+  "name": "Action & Adventure",
+  "popularityIndex": 9.1
+}
+
+### Create movie in genre
+POST http://localhost:8082/api/movies/by-genre/12ecdd09-7740-45a1-92d6-0781d94dbe61
+Content-Type: application/json
+
+{
+  "title": "Inception",
+  "releaseDate": "2010-07-16",
+  "rating": 8.8
+}
+
+### List all movies
+GET http://localhost:8082/api/movies
+
+### List movies in a genre
+GET http://localhost:8081/api/genres/7b2076e3-8f7c-463a-87ed-dfc53617cbb3/movies
+
+### Get one movie (replace {movieId})
+GET http://localhost:8080/api/movies/{movieId}
+
+### Update movie
+PUT http://localhost:8080/api/movies/9cff4217-89c4-4099-baa7-b96ca19ef531
+Content-Type: application/json
+
+{
+  "title": "Inception (Director's Cut)",
+  "releaseDate": "2010-07-16",
+  "rating": 9.0
+}
+
+### Delete movie
+DELETE http://localhost:8080/api/movies/9cff4217-89c4-4099-baa7-b96ca19ef531
+
+### Delete genre (cascade deletes movies)
+DELETE http://localhost:8080/api/genres/{genreId}

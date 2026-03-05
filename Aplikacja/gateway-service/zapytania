@@ -1,0 +1,70 @@
+// ----------------------------------------------------
+// ===== OPERACJE NA GATUNKACH (Category Service przez Gateway)
+// ----------------------------------------------------
+
+### 1. Create Genre
+// Zwróci 201 Created i UUID gatunku. Ten UUID użyj w następnych zapytaniach.
+POST http://localhost:8080/api/genres
+Content-Type: application/json
+
+{
+  "name": "Action",
+  "popularityIndex": 9.0
+}
+
+### 2. List genres
+GET http://localhost:8080/api/genres
+
+### 3. Get a single genre (Użyj UUID z kroku 1)
+GET http://localhost:8080/api/genres/{UUID_GATUNKU}
+
+### 4. Update genre
+PUT http://localhost:8080/api/genres/{UUID_GATUNKU}
+Content-Type: application/json
+
+{
+  "name": "Action & Adventure",
+  "popularityIndex": 9.1
+}
+
+// ----------------------------------------------------
+// ===== OPERACJE NA FILMACH (Movie Service przez Gateway)
+// ----------------------------------------------------
+
+### 5. Create movie (POPRAWIONE: genreId w ciele JSON)
+// Zwróci 201 Created i UUID filmu. Ten UUID użyj w kolejnych zapytaniach.
+POST http://localhost:8080/api/movies
+Content-Type: application/json
+
+{
+  "title": "Inception",
+  "releaseDate": "2010-07-16",
+  "rating": 8.8,
+  "genreId": "{UUID_GATUNKU}"
+}
+
+### 6. List all movies
+GET http://localhost:8080/api/movies
+
+### 7. List movies in a genre (POPRAWIONE: Używa nowej ścieżki /by-genre/)
+GET http://localhost:8080/api/movies/by-genre/{UUID_GATUNKU}
+
+### 8. Get one movie
+GET http://localhost:8080/api/movies/{UUID_FILMU}
+
+### 9. Update movie
+PUT http://localhost:8080/api/movies/{UUID_FILMU}
+Content-Type: application/json
+
+{
+  "title": "Inception (Director's Cut)",
+  "releaseDate": "2010-07-16",
+  "rating": 9.0,
+  "genreId": "{UUID_GATUNKU}"
+}
+
+### 10. Delete movie
+DELETE http://localhost:8080/api/movies/{UUID_FILMU}
+
+### 11. Delete genre (Wysyła event i kaskadowo usuwa filmy!)
+DELETE http://localhost:8080/api/genres/{UUID_GATUNKU}

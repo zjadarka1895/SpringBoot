@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: category_route
+          uri: http://category-service:8081
+          predicates:
+            - Path=/api/genres/**
+        - id: movie_route
+          uri: http://movie-service:8082
+          predicates:
+            - Path=/api/movies/**
+
+server:
+  port: 8080

@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # --- BAZA DANYCH DLA KATEGORII ---
+  category-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: category_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432" 
+
+  # --- BAZA DANYCH DLA ELEMENTÓW ---
+  movie-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: movie_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+
+  # --- APLIKACJA KATEGORIE ---
+  category-service:
+    build: ./category-service 
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://category-db:5432/category_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - category-db
+
+  # --- APLIKACJA ELEMENTY
+  movie-service:
+    build: ./element-service 
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://movie-db:5432/movie_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - movie-db
+
+  # --- GATEWAY SERVICE ---
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - category-service
+      - movie-service
+  # --- APLIKACJA ANGULAR ---
+  frontend:
+    build: ./movie-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - category-service
+      - movie-service
